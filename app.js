@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (matches === bombAmount) {
             console.log("You win !!!!")
+            isGameOver = true
         }
     }
   }
