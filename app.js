@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let width = 10;
   let squares = [];
   let bombAmount = 20;
+  let isGameOver = false;
 
   // Create Board
   function createBoard() {
@@ -70,6 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Click on
   function click(square) {
+    let currentId = square.id;
+
+    if (isGameOver) return;
+
+    if (
+      square.classList.contains('checked') ||
+      square.classList.contains('flag')
+    )
+      return;
+
     if (square.classList.contains('bomb')) {
       console.log('Game Over !');
     } else {
@@ -79,7 +90,23 @@ document.addEventListener('DOMContentLoaded', () => {
         square.innerHTML = total;
         return;
       }
-      square.classList.add('checked');
+      checkSquare(square, currentId);
     }
+    square.classList.add('checked');
+  }
+  // Checkl neighbors when square is clicked
+  function checkSquare(square, currentId) {
+
+    const isLeftEdge = (currentId % width === 0)
+    const isRightEdge = (currentId % width === width -1)
+
+    // Recursive checks on click method
+    setTimeout(() => {
+        if (currentId > 0 && !isLeftEdge) {
+            const newId = squares[parseInt(currentId )-1].id
+            const newSquare = document.getElementById(newId)
+            click(newSquare)
+        }
+    }, 10)
   }
 });
